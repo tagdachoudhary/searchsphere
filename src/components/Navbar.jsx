@@ -1,58 +1,58 @@
-function Navbar() {
+import { useState } from "react";
+import { Search } from "lucide-react";
+
+function Navbar({ onSearch }) {
+  const [query, setQuery] = useState("");
+
+  const handleSearch = () => {
+    if (query.trim() !== "") {
+      onSearch(query);
+    }
+  };
+
   return (
-    <header className="sticky top-0 z-50 border-b border-slate-800/70 bg-slate-950/70 backdrop-blur-2xl">
-      <nav className="mx-auto flex max-w-7xl items-center justify-between px-8 py-5">
+    <nav className="sticky top-0 z-50 w-full bg-black/95 backdrop-blur border-b border-zinc-800">
+      <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
 
-        <div className="flex items-center gap-3">
+        {/* Logo */}
+        <h1 className="text-2xl font-bold text-white">
+          Search<span className="text-blue-400">Sphere</span>
+        </h1>
 
-          <div className="rounded-2xl bg-gradient-to-br from-blue-600 to-cyan-500 p-3 shadow-lg shadow-blue-500/20">
-            🔍
-          </div>
-
-          <h1 className="text-2xl font-extrabold tracking-tight">
-            SearchSphere
-          </h1>
-
-          <span className="rounded-full border border-blue-500/30 bg-blue-500/10 px-2 py-1 text-xs font-semibold text-blue-300">
-            BETA
-          </span>
-
+        {/* Navigation */}
+        <div className="hidden lg:flex items-center gap-8 text-gray-400">
+          <button className="hover:text-white transition">Features</button>
+          <button className="hover:text-white transition">Technology</button>
+          <button className="hover:text-white transition">About</button>
         </div>
 
-        <div className="hidden items-center gap-8 text-slate-300 md:flex">
+        {/* Search */}
+        <div className="flex items-center gap-2 rounded-xl border border-zinc-700 bg-zinc-900 px-3 py-2">
 
-          <a href="#" className="transition hover:text-white">
-            Features
-          </a>
+          <Search size={18} className="text-gray-400" />
 
-          <a href="#" className="transition hover:text-white">
-            Technology
-          </a>
+          <input
+            type="text"
+            placeholder="Search..."
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") handleSearch();
+            }}
+            className="w-56 bg-transparent text-white outline-none placeholder:text-gray-500"
+          />
 
-          <a href="#" className="transition hover:text-white">
-            Pricing
-          </a>
-
-          <a href="#" className="transition hover:text-white">
-            GitHub
-          </a>
-
-        </div>
-
-        <div className="flex gap-3">
-
-          <button className="rounded-xl border border-slate-700 px-5 py-3 hover:border-blue-500">
-            Sign In
-          </button>
-
-          <button className="rounded-xl bg-gradient-to-r from-blue-600 to-cyan-500 px-6 py-3 font-semibold transition-all duration-300 hover:scale-105">
-            Launch App
+          <button
+            onClick={handleSearch}
+            className="rounded-lg bg-blue-600 px-4 py-2 text-white hover:bg-blue-500 transition"
+          >
+            Search
           </button>
 
         </div>
 
-      </nav>
-    </header>
+      </div>
+    </nav>
   );
 }
 

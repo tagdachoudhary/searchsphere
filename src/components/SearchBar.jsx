@@ -1,67 +1,47 @@
 import { useState } from "react";
+import { Search } from "lucide-react";
 
-function SearchBar() {
+const SearchBar = ({ onSearch }) => {
   const [query, setQuery] = useState("");
 
+  const handleSearch = () => {
+    if (query.trim()) {
+      onSearch(query);
+    }
+  };
+
   return (
-    <div className="w-full">
+    <div className="w-full max-w-4xl mx-auto mt-10 px-6">
+      <div className="flex items-center bg-zinc-900 border border-zinc-700 rounded-2xl p-2 shadow-xl">
 
-      <div className="rounded-[28px] border border-slate-700/70 bg-slate-900/70 p-3 backdrop-blur-xl shadow-2xl">
+        <Search
+          className="ml-4 text-gray-400"
+          size={24}
+        />
 
-        <div className="flex items-center gap-3">
+        <input
+          type="text"
+          placeholder="Search anything..."
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              handleSearch();
+            }
+          }}
+          className="flex-1 bg-transparent text-white px-5 py-4 outline-none placeholder-gray-500"
+        />
 
-          <span className="text-2xl">🔍</span>
-
-          <input
-            type="text"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search PDFs, GitHub, websites, documentation..."
-            className="flex-1 bg-transparent text-lg text-white outline-none placeholder:text-slate-500"
-          />
-
-          <button className="rounded-xl border border-slate-700 px-4 py-2 hover:bg-slate-800">
-            📎
-          </button>
-
-          <button className="rounded-xl border border-slate-700 px-4 py-2 hover:bg-slate-800">
-            🎤
-          </button>
-
-          <button className="rounded-xl bg-gradient-to-r from-blue-600 to-cyan-500 px-7 py-3 font-semibold transition-all duration-300 hover:scale-105">
-            ✨ AI Search
-          </button>
-
-        </div>
-
-        <div className="mt-3 flex flex-wrap items-center gap-3">
-
-          <span className="rounded-full bg-slate-800 px-3 py-1 text-sm">
-            📄 PDFs
-          </span>
-
-          <span className="rounded-full bg-slate-800 px-3 py-1 text-sm">
-            💻 GitHub
-          </span>
-
-          <span className="rounded-full bg-slate-800 px-3 py-1 text-sm">
-            🌐 Websites
-          </span>
-
-          <span className="rounded-full bg-slate-800 px-3 py-1 text-sm">
-            📚 Docs
-          </span>
-
-          <div className="ml-auto rounded-lg border border-slate-700 px-3 py-1 text-xs text-slate-400">
-            Ctrl + K
-          </div>
-
-        </div>
+        <button
+          onClick={handleSearch}
+          className="bg-white text-black px-7 py-3 rounded-xl font-semibold hover:scale-105 transition"
+        >
+          Search
+        </button>
 
       </div>
-
     </div>
   );
-}
+};
 
 export default SearchBar;

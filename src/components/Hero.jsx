@@ -1,5 +1,3 @@
-import SearchBar from "./SearchBar";
-
 function Hero() {
   return (
     <section className="relative flex min-h-[90vh] items-center justify-center overflow-hidden bg-[#030712] px-6">
@@ -44,11 +42,6 @@ function Hero() {
           and knowledge using one intelligent AI-powered search engine.
         </p>
 
-        {/* Search Bar */}
-        <div className="mt-10 w-full max-w-4xl">
-          <SearchBar />
-        </div>
-
         {/* Buttons */}
         <div className="mt-10 flex flex-col gap-4 sm:flex-row">
 
@@ -62,7 +55,6 @@ function Hero() {
 
         </div>
 
-        {/* Small Text */}
         <p className="mt-8 text-sm text-slate-500">
           Trusted by developers • students • researchers
         </p>

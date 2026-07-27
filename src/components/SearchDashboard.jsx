@@ -1,168 +1,181 @@
-function SearchDashboard() {
-    return (
-      <section className="px-6 pb-24">
-        <div className="mx-auto max-w-6xl overflow-hidden rounded-[32px] border border-slate-800 bg-slate-900/70 shadow-2xl backdrop-blur-xl">
-  
-          {/* Header */}
-          <div className="flex items-center justify-between border-b border-slate-800 bg-slate-950 px-8 py-5">
-  
-            <div className="flex gap-3">
-              <div className="h-3 w-3 rounded-full bg-red-500"></div>
-              <div className="h-3 w-3 rounded-full bg-yellow-500"></div>
-              <div className="h-3 w-3 rounded-full bg-green-500"></div>
-            </div>
-  
-            <h2 className="text-lg font-semibold text-slate-300">
-              SearchSphere Workspace
-            </h2>
-  
-            <div className="rounded-full border border-blue-500/20 bg-blue-500/10 px-3 py-1 text-xs text-blue-300">
-              AI Powered
-            </div>
-  
-          </div>
-  
-          <div className="grid lg:grid-cols-[260px_1fr]">
-  
-            {/* Sidebar */}
-  
-            <aside className="border-r border-slate-800 p-6">
-  
-              <h3 className="mb-6 text-xl font-bold text-white">
-                Sources
-              </h3>
-  
-              <div className="space-y-3">
-  
-                <div className="rounded-xl border border-blue-500 bg-blue-500/10 px-5 py-4">
-                  📄 PDFs
-                </div>
-  
-                <div className="rounded-xl bg-slate-800 px-5 py-4 hover:bg-slate-700 transition">
-                  🌐 Websites
-                </div>
-  
-                <div className="rounded-xl bg-slate-800 px-5 py-4 hover:bg-slate-700 transition">
-                  💻 GitHub
-                </div>
-  
-                <div className="rounded-xl bg-slate-800 px-5 py-4 hover:bg-slate-700 transition">
-                  📝 Notes
-                </div>
-  
-                <div className="rounded-xl bg-slate-800 px-5 py-4 hover:bg-slate-700 transition">
-                  📚 Documentation
-                </div>
-  
-              </div>
-  
-            </aside>
-  
-            {/* Main */}
-  
-            <main className="p-8">
-  
-              <div className="rounded-2xl border border-slate-800 bg-slate-950 p-5">
-  
-                <span className="text-slate-400">Searching...</span>
-  
-                <h2 className="mt-2 text-2xl font-bold text-blue-400">
-                  How does Semantic Search work?
-                </h2>
-  
-              </div>
-  
-              <div className="mt-8 space-y-5">
-  
-                <div className="rounded-2xl border border-slate-800 bg-slate-800 p-5 transition-all duration-300 hover:-translate-y-1 hover:border-blue-500 hover:shadow-[0_0_25px_rgba(59,130,246,0.2)]">
-  
-                  <div className="flex items-center justify-between">
-  
-                    <span className="font-semibold">
-                      📄 Semantic_Search.pdf
-                    </span>
-  
-                    <span className="rounded-full bg-green-500/20 px-3 py-1 text-xs text-green-400">
-                      Indexed
-                    </span>
-  
-                  </div>
-  
-                </div>
-  
-                <div className="rounded-2xl border border-slate-800 bg-slate-800 p-5 transition-all duration-300 hover:-translate-y-1 hover:border-blue-500 hover:shadow-[0_0_25px_rgba(59,130,246,0.2)]">
-  
-                  <div className="flex items-center justify-between">
-  
-                    <span className="font-semibold">
-                      💻 microsoft/graphrag
-                    </span>
-  
-                    <span className="rounded-full bg-green-500/20 px-3 py-1 text-xs text-green-400">
-                      Connected
-                    </span>
-  
-                  </div>
-  
-                </div>
-  
-                <div className="rounded-2xl border border-slate-800 bg-slate-800 p-5 transition-all duration-300 hover:-translate-y-1 hover:border-blue-500 hover:shadow-[0_0_25px_rgba(59,130,246,0.2)]">
-  
-                  <div className="flex items-center justify-between">
-  
-                    <span className="font-semibold">
-                      🌐 OpenAI Documentation
-                    </span>
-  
-                    <span className="rounded-full bg-green-500/20 px-3 py-1 text-xs text-green-400">
-                      Live
-                    </span>
-  
-                  </div>
-  
-                </div>
-  
-                <div className="rounded-3xl border border-blue-500/30 bg-blue-500/10 p-7">
-  
-                  <div className="mb-5 flex items-center gap-4">
-  
-                    <div className="flex h-12 w-12 items-center justify-center rounded-full bg-blue-500/20 text-2xl">
-                      🤖
-                    </div>
-  
-                    <div>
-  
-                      <h3 className="text-xl font-bold text-blue-300">
-                        AI Summary
-                      </h3>
-  
-                      <p className="text-sm text-slate-400">
-                        Generated in 0.18 seconds
-                      </p>
-  
-                    </div>
-  
-                  </div>
-  
-                  <p className="leading-8 text-slate-300">
-                    Semantic search understands the meaning of your query instead
-                    of matching only keywords. SearchSphere combines AI embeddings,
-                    document indexing, and contextual retrieval to provide accurate
-                    answers from PDFs, websites, GitHub repositories, notes, and
-                    documentation—all within a single intelligent workspace.
-                  </p>
-  
-                </div>
-  
-              </div>
-  
-            </main>
-  
-          </div>
-  
+const SearchDashboard = ({ searchQuery }) => {
+  return (
+    <div className="min-h-screen bg-[#030712] text-white px-6 py-12">
+
+      <div className="max-w-6xl mx-auto">
+
+        {/* Search Heading */}
+
+        <div className="mb-10">
+
+          <h1 className="text-5xl font-bold">
+            Results for{" "}
+            <span className="text-cyan-400">
+              "{searchQuery}"
+            </span>
+          </h1>
+
+          <p className="mt-3 text-gray-400 text-lg">
+            AI ranked the most relevant information across the web.
+          </p>
+
         </div>
-      </section>
-    );
-  }
-  
-  export default SearchDashboard;
+
+
+        {/* AI Summary */}
+
+        <div className="mb-10 rounded-3xl border border-cyan-500/20 bg-gradient-to-br from-cyan-500/10 to-blue-600/10 p-8 backdrop-blur-xl shadow-2xl">
+
+          <div className="flex items-center gap-3 mb-5">
+
+            <div className="h-12 w-12 rounded-full bg-cyan-500 flex items-center justify-center text-xl">
+              🤖
+            </div>
+
+            <div>
+
+              <h2 className="text-2xl font-bold">
+                AI Summary
+              </h2>
+
+              <p className="text-gray-400">
+                Generated by SearchSphere AI
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <p className="leading-8 text-gray-300 text-lg">
+
+            SearchSphere analyzed thousands of trusted sources and generated
+            this response. This is currently a demo summary. In the next
+            milestone it will be powered by an AI model that summarizes real
+            search results in seconds.
+
+          </p>
+
+
+          <div className="mt-6 flex gap-4">
+
+            <div className="rounded-xl bg-green-500/20 px-4 py-2 text-green-300">
+              Confidence 98%
+            </div>
+
+            <div className="rounded-xl bg-blue-500/20 px-4 py-2 text-blue-300">
+              127 Sources Analyzed
+            </div>
+
+          </div>
+
+        </div>
+
+
+
+        {/* Search Results */}
+
+        <div className="space-y-6">
+
+
+          <div className="rounded-3xl border border-zinc-800 bg-zinc-900/70 p-7 hover:border-cyan-500 transition-all duration-300 hover:scale-[1.02]">
+
+            <div className="text-cyan-400 text-sm">
+              https://www.youtube.com
+            </div>
+
+            <h2 className="mt-2 text-2xl font-bold">
+              Official YouTube Website
+            </h2>
+
+            <p className="mt-3 text-gray-400 leading-7">
+              Watch videos, live streams, creators, podcasts and more on the
+              world's largest video platform.
+            </p>
+
+            <div className="mt-5 flex gap-3">
+
+              <span className="rounded-full bg-cyan-500/20 px-3 py-1 text-sm text-cyan-300">
+                AI Rank #1
+              </span>
+
+              <span className="rounded-full bg-green-500/20 px-3 py-1 text-sm text-green-300">
+                Relevance 99%
+              </span>
+
+            </div>
+
+          </div>
+
+
+
+          <div className="rounded-3xl border border-zinc-800 bg-zinc-900/70 p-7 hover:border-cyan-500 transition-all duration-300 hover:scale-[1.02]">
+
+            <div className="text-cyan-400 text-sm">
+              https://en.wikipedia.org
+            </div>
+
+            <h2 className="mt-2 text-2xl font-bold">
+              Wikipedia
+            </h2>
+
+            <p className="mt-3 text-gray-400 leading-7">
+              Learn detailed information, history, features and background
+              related to "{searchQuery}" from one of the world's largest
+              knowledge bases.
+            </p>
+
+            <div className="mt-5 flex gap-3">
+
+              <span className="rounded-full bg-cyan-500/20 px-3 py-1 text-sm text-cyan-300">
+                AI Rank #2
+              </span>
+
+              <span className="rounded-full bg-green-500/20 px-3 py-1 text-sm text-green-300">
+                Relevance 96%
+              </span>
+
+            </div>
+
+          </div>
+
+
+
+          <div className="rounded-3xl border border-zinc-800 bg-zinc-900/70 p-7 hover:border-cyan-500 transition-all duration-300 hover:scale-[1.02]">
+
+            <div className="text-cyan-400 text-sm">
+              https://github.com
+            </div>
+
+            <h2 className="mt-2 text-2xl font-bold">
+              GitHub Resources
+            </h2>
+
+            <p className="mt-3 text-gray-400 leading-7">
+              Search repositories, open-source projects and developer resources
+              related to "{searchQuery}".
+            </p>
+
+            <div className="mt-5 flex gap-3">
+
+              <span className="rounded-full bg-cyan-500/20 px-3 py-1 text-sm text-cyan-300">
+                AI Rank #3
+              </span>
+
+              <span className="rounded-full bg-green-500/20 px-3 py-1 text-sm text-green-300">
+                Relevance 92%
+              </span>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  );
+};
+
+export default SearchDashboard;

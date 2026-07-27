@@ -1,31 +1,68 @@
+import { useState } from "react";
+
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
-import SearchDashboard from "./components/SearchDashboard";
 import Features from "./components/Features";
 import Stats from "./components/Stats";
+import Footer from "./components/Footers";
+
+import SearchDashboard from "./components/SearchDashboard";
+
 import CTA from "./components/CTA";
-import Footers from "./components/Footers";
+import DashboardPreview from "./components/DashboardPreview";
+import HowItWorks from "./components/HowItWorks";
+import TrustedBy from "./components/TrustedBy";
+
 
 function App() {
+
+  const [searchQuery, setSearchQuery] = useState("");
+
+
+  const handleSearch = (query) => {
+    console.log("APP SEARCH:", query);
+    setSearchQuery(query);
+  };
+
+
   return (
-    <div className="min-h-screen bg-slate-950 text-white">
+    <div className="min-h-screen bg-black text-white">
 
-      <Navbar />
+      <Navbar onSearch={handleSearch} />
 
-      <Hero />
 
-      <SearchDashboard />
+      {searchQuery ? (
 
-      <Features />
+        <SearchDashboard 
+          searchQuery={searchQuery}
+        />
 
-      <Stats />
+      ) : (
 
-      <CTA />
+        <>
+          <Hero />
 
-      <Footers />
+          <DashboardPreview />
+
+          <HowItWorks />
+
+          <Features />
+
+          <TrustedBy />
+
+          <Stats />
+
+          <CTA />
+        </>
+
+      )}
+
+
+      <Footer />
 
     </div>
   );
 }
+
 
 export default App;
