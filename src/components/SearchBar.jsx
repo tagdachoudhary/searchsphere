@@ -1,23 +1,19 @@
 import { useState } from "react";
-import { Search } from "lucide-react";
 
 const SearchBar = ({ onSearch }) => {
   const [query, setQuery] = useState("");
 
   const handleSearch = () => {
-    if (query.trim()) {
-      onSearch(query);
-    }
+    const trimmedQuery = query.trim();
+
+    if (!trimmedQuery) return;
+
+    onSearch(trimmedQuery);
   };
 
   return (
-    <div className="w-full max-w-4xl mx-auto mt-10 px-6">
-      <div className="flex items-center bg-zinc-900 border border-zinc-700 rounded-2xl p-2 shadow-xl">
-
-        <Search
-          className="ml-4 text-gray-400"
-          size={24}
-        />
+    <div className="w-full max-w-4xl mx-auto mt-10">
+      <div className="flex items-center rounded-2xl border border-gray-700 bg-gray-900/80 backdrop-blur-lg shadow-2xl overflow-hidden transition-all duration-300 hover:border-blue-500">
 
         <input
           type="text"
@@ -25,16 +21,14 @@ const SearchBar = ({ onSearch }) => {
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           onKeyDown={(e) => {
-            if (e.key === "Enter") {
-              handleSearch();
-            }
+            if (e.key === "Enter") handleSearch();
           }}
-          className="flex-1 bg-transparent text-white px-5 py-4 outline-none placeholder-gray-500"
+          className="flex-1 bg-transparent text-white placeholder-gray-400 px-6 py-5 text-lg outline-none"
         />
 
         <button
           onClick={handleSearch}
-          className="bg-white text-black px-7 py-3 rounded-xl font-semibold hover:scale-105 transition"
+          className="bg-blue-600 hover:bg-blue-700 px-8 py-5 font-semibold text-white transition-all duration-300"
         >
           Search
         </button>

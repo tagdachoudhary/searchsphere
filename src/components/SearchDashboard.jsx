@@ -1,13 +1,24 @@
+import Sidebar from "./Sidebar";
+import SearchFilters from "./SearchFilters";
+import SearchCategories from "./SearchCategories";
+import useSearch from "../hooks/useSearch";
+
 const SearchDashboard = ({ searchQuery }) => {
+  const {
+    results,
+    peopleAlsoAsk,
+    relatedSearches,
+    loading,
+    error,
+  } = useSearch(searchQuery);
+
   return (
-    <div className="min-h-screen bg-[#030712] text-white px-6 py-12">
+    <div className="flex min-h-screen bg-[#030712] text-white">
+      <Sidebar />
 
-      <div className="max-w-6xl mx-auto">
-
-        {/* Search Heading */}
-
-        <div className="mb-10">
-
+      <main className="flex-1 px-10 py-10">
+        <div className="mx-auto max-w-5xl">
+          {/* Heading */}
           <h1 className="text-5xl font-bold">
             Results for{" "}
             <span className="text-cyan-400">
@@ -15,165 +26,143 @@ const SearchDashboard = ({ searchQuery }) => {
             </span>
           </h1>
 
-          <p className="mt-3 text-gray-400 text-lg">
-            AI ranked the most relevant information across the web.
+          <p className="mt-3 text-lg text-gray-400">
+            Live Google search results powered by SearchSphere AI.
           </p>
 
-        </div>
+          {/* Filters */}
+          <div className="mt-8">
+            <SearchFilters />
+          </div>
 
+          {/* Categories */}
+          <div className="mt-10">
+            <SearchCategories />
+          </div>
 
-        {/* AI Summary */}
+          {/* AI Summary */}
+          <div className="mt-10 rounded-3xl border border-cyan-500/20 bg-gradient-to-br from-cyan-500/10 to-blue-600/10 p-8">
+            <div className="flex items-center gap-3">
+              <span className="text-3xl">🤖</span>
 
-        <div className="mb-10 rounded-3xl border border-cyan-500/20 bg-gradient-to-br from-cyan-500/10 to-blue-600/10 p-8 backdrop-blur-xl shadow-2xl">
+              <div>
+                <h2 className="text-2xl font-bold">
+                  AI Summary
+                </h2>
 
-          <div className="flex items-center gap-3 mb-5">
-
-            <div className="h-12 w-12 rounded-full bg-cyan-500 flex items-center justify-center text-xl">
-              🤖
+                <p className="text-gray-400">
+                  AI integration coming next...
+                </p>
+              </div>
             </div>
 
-            <div>
+            <p className="mt-6 leading-8 text-gray-300">
+              SearchSphere has successfully fetched live search
+              results. The next milestone is replacing this text with
+              an AI-generated summary using an LLM.
+            </p>
+          </div>
 
-              <h2 className="text-2xl font-bold">
-                AI Summary
+          {/* Loading */}
+          {loading && (
+            <div className="mt-10 text-center">
+              <div className="inline-block h-12 w-12 animate-spin rounded-full border-4 border-cyan-400 border-t-transparent"></div>
+
+              <p className="mt-4 text-gray-400">
+                Searching...
+              </p>
+            </div>
+          )}
+
+          {/* Error */}
+          {error && (
+            <div className="mt-10 rounded-xl border border-red-500 bg-red-500/10 p-6 text-red-300">
+              {error}
+            </div>
+          )}
+
+          {/* Search Results */}
+          {!loading && !error && (
+            <div className="mt-10 space-y-6">
+              {results.map((result, index) => (
+                <div
+                  key={index}
+                  className="rounded-3xl border border-zinc-800 bg-zinc-900 p-7 transition-all duration-300 hover:-translate-y-1 hover:border-cyan-500"
+                >
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="break-all text-sm text-cyan-400">
+                        {result.link}
+                      </p>
+
+                      <h2 className="mt-2 text-2xl font-bold">
+                        {result.title}
+                      </h2>
+                    </div>
+
+                    <div className="rounded-full bg-green-500/20 px-4 py-2 text-green-300">
+                      #{result.position}
+                    </div>
+                  </div>
+
+                  <p className="mt-5 leading-7 text-gray-400">
+                    {result.snippet}
+                  </p>
+
+                  <a
+                    href={result.link}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="mt-6 inline-block rounded-lg border border-cyan-500 px-5 py-2 text-cyan-400 transition hover:bg-cyan-500 hover:text-white"
+                  >
+                    🌐 Visit Website
+                  </a>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* People Also Ask */}
+          {peopleAlsoAsk.length > 0 && (
+            <div className="mt-16">
+              <h2 className="mb-6 text-3xl font-bold">
+                People Also Ask
               </h2>
 
-              <p className="text-gray-400">
-                Generated by SearchSphere AI
-              </p>
-
+              <div className="space-y-4">
+                {peopleAlsoAsk.map((item, index) => (
+                  <div
+                    key={index}
+                    className="rounded-xl border border-zinc-800 bg-zinc-900 p-5"
+                  >
+                    {item.question}
+                  </div>
+                ))}
+              </div>
             </div>
+          )}
 
-          </div>
+          {/* Related Searches */}
+          {relatedSearches.length > 0 && (
+            <div className="mt-16">
+              <h2 className="mb-6 text-3xl font-bold">
+                Related Searches
+              </h2>
 
-
-          <p className="leading-8 text-gray-300 text-lg">
-
-            SearchSphere analyzed thousands of trusted sources and generated
-            this response. This is currently a demo summary. In the next
-            milestone it will be powered by an AI model that summarizes real
-            search results in seconds.
-
-          </p>
-
-
-          <div className="mt-6 flex gap-4">
-
-            <div className="rounded-xl bg-green-500/20 px-4 py-2 text-green-300">
-              Confidence 98%
+              <div className="flex flex-wrap gap-3">
+                {relatedSearches.map((item, index) => (
+                  <div
+                    key={index}
+                    className="rounded-full border border-cyan-500 px-4 py-2"
+                  >
+                    {item.query}
+                  </div>
+                ))}
+              </div>
             </div>
-
-            <div className="rounded-xl bg-blue-500/20 px-4 py-2 text-blue-300">
-              127 Sources Analyzed
-            </div>
-
-          </div>
-
+          )}
         </div>
-
-
-
-        {/* Search Results */}
-
-        <div className="space-y-6">
-
-
-          <div className="rounded-3xl border border-zinc-800 bg-zinc-900/70 p-7 hover:border-cyan-500 transition-all duration-300 hover:scale-[1.02]">
-
-            <div className="text-cyan-400 text-sm">
-              https://www.youtube.com
-            </div>
-
-            <h2 className="mt-2 text-2xl font-bold">
-              Official YouTube Website
-            </h2>
-
-            <p className="mt-3 text-gray-400 leading-7">
-              Watch videos, live streams, creators, podcasts and more on the
-              world's largest video platform.
-            </p>
-
-            <div className="mt-5 flex gap-3">
-
-              <span className="rounded-full bg-cyan-500/20 px-3 py-1 text-sm text-cyan-300">
-                AI Rank #1
-              </span>
-
-              <span className="rounded-full bg-green-500/20 px-3 py-1 text-sm text-green-300">
-                Relevance 99%
-              </span>
-
-            </div>
-
-          </div>
-
-
-
-          <div className="rounded-3xl border border-zinc-800 bg-zinc-900/70 p-7 hover:border-cyan-500 transition-all duration-300 hover:scale-[1.02]">
-
-            <div className="text-cyan-400 text-sm">
-              https://en.wikipedia.org
-            </div>
-
-            <h2 className="mt-2 text-2xl font-bold">
-              Wikipedia
-            </h2>
-
-            <p className="mt-3 text-gray-400 leading-7">
-              Learn detailed information, history, features and background
-              related to "{searchQuery}" from one of the world's largest
-              knowledge bases.
-            </p>
-
-            <div className="mt-5 flex gap-3">
-
-              <span className="rounded-full bg-cyan-500/20 px-3 py-1 text-sm text-cyan-300">
-                AI Rank #2
-              </span>
-
-              <span className="rounded-full bg-green-500/20 px-3 py-1 text-sm text-green-300">
-                Relevance 96%
-              </span>
-
-            </div>
-
-          </div>
-
-
-
-          <div className="rounded-3xl border border-zinc-800 bg-zinc-900/70 p-7 hover:border-cyan-500 transition-all duration-300 hover:scale-[1.02]">
-
-            <div className="text-cyan-400 text-sm">
-              https://github.com
-            </div>
-
-            <h2 className="mt-2 text-2xl font-bold">
-              GitHub Resources
-            </h2>
-
-            <p className="mt-3 text-gray-400 leading-7">
-              Search repositories, open-source projects and developer resources
-              related to "{searchQuery}".
-            </p>
-
-            <div className="mt-5 flex gap-3">
-
-              <span className="rounded-full bg-cyan-500/20 px-3 py-1 text-sm text-cyan-300">
-                AI Rank #3
-              </span>
-
-              <span className="rounded-full bg-green-500/20 px-3 py-1 text-sm text-green-300">
-                Relevance 92%
-              </span>
-
-            </div>
-
-          </div>
-
-        </div>
-
-      </div>
-
+      </main>
     </div>
   );
 };
