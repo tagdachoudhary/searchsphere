@@ -4,13 +4,7 @@ import SearchCategories from "./SearchCategories";
 import useSearch from "../hooks/useSearch";
 
 const SearchDashboard = ({ searchQuery }) => {
-  const {
-    results,
-    peopleAlsoAsk,
-    relatedSearches,
-    loading,
-    error,
-  } = useSearch(searchQuery);
+  const { results, summary, loading, error } = useSearch(searchQuery);
 
   return (
     <div className="flex min-h-screen bg-[#030712] text-white">
@@ -40,72 +34,91 @@ const SearchDashboard = ({ searchQuery }) => {
             <SearchCategories />
           </div>
 
-          {/* AI Summary */}
-          <div className="mt-10 rounded-3xl border border-cyan-500/20 bg-gradient-to-br from-cyan-500/10 to-blue-600/10 p-8">
-            <div className="flex items-center gap-3">
-              <span className="text-3xl">🤖</span>
-
-              <div>
-                <h2 className="text-2xl font-bold">
-                  AI Summary
-                </h2>
-
-                <p className="text-gray-400">
-                  AI integration coming next...
-                </p>
-              </div>
-            </div>
-
-            <p className="mt-6 leading-8 text-gray-300">
-              SearchSphere has successfully fetched live search
-              results. The next milestone is replacing this text with
-              an AI-generated summary using an LLM.
-            </p>
-          </div>
-
           {/* Loading */}
           {loading && (
-            <div className="mt-10 text-center">
+            <div className="mt-12 text-center">
               <div className="inline-block h-12 w-12 animate-spin rounded-full border-4 border-cyan-400 border-t-transparent"></div>
 
-              <p className="mt-4 text-gray-400">
-                Searching...
+              <p className="mt-4 text-gray-400 text-lg">
+                Generating AI Summary...
               </p>
             </div>
           )}
 
           {/* Error */}
           {error && (
-            <div className="mt-10 rounded-xl border border-red-500 bg-red-500/10 p-6 text-red-300">
+            <div className="mt-10 rounded-2xl border border-red-500 bg-red-500/10 p-6 text-red-300">
               {error}
+            </div>
+          )}
+
+          {/* AI Summary */}
+          {!loading && !error && summary && (
+            <div className="mt-10 overflow-hidden rounded-3xl border border-cyan-500/20 bg-gradient-to-br from-cyan-500/10 via-blue-500/10 to-indigo-500/10 shadow-2xl backdrop-blur-xl">
+
+              <div className="border-b border-cyan-500/20 px-8 py-6">
+                <div className="flex items-center gap-4">
+                  <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-cyan-500/20 text-3xl">
+                    🤖
+                  </div>
+
+                  <div>
+                    <h2 className="text-3xl font-bold">
+                      AI Summary
+                    </h2>
+
+                    <p className="mt-1 text-gray-400">
+                      AI-generated summary • Powered by Gemini
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="p-8">
+                <div className="rounded-2xl border border-cyan-500/20 bg-black/30 p-6">
+                  <div className="mb-5 flex items-center gap-3">
+                    <span className="text-2xl">✨</span>
+
+                    <h3 className="text-xl font-semibold text-cyan-400">
+                      Key Insights
+                    </h3>
+                  </div>
+
+                  <div className="whitespace-pre-line leading-9 text-gray-200">
+                    {summary}
+                  </div>
+                </div>
+              </div>
             </div>
           )}
 
           {/* Search Results */}
           {!loading && !error && (
-            <div className="mt-10 space-y-6">
+            <div className="mt-12 space-y-7">
               {results.map((result, index) => (
                 <div
                   key={index}
-                  className="rounded-3xl border border-zinc-800 bg-zinc-900 p-7 transition-all duration-300 hover:-translate-y-1 hover:border-cyan-500"
+                  className="group rounded-3xl border border-zinc-800 bg-zinc-900/80 p-8 shadow-lg transition-all duration-300 hover:-translate-y-1 hover:border-cyan-500 hover:shadow-cyan-500/10"
                 >
-                  <div className="flex items-center justify-between">
-                    <div>
+                  <div className="flex items-start justify-between gap-6">
+                    <div className="flex-1">
                       <p className="break-all text-sm text-cyan-400">
                         {result.link}
                       </p>
 
-                      <h2 className="mt-2 text-2xl font-bold">
+                      <h2 className="mt-3 text-2xl font-bold transition group-hover:text-cyan-400">
                         {result.title}
                       </h2>
                     </div>
 
-                    <div className="rounded-full bg-green-500/20 px-4 py-2 text-green-300">
-                      #{result.position}
-                    </div>
+                    {result.position && (
+                      <div className="rounded-full bg-cyan-500/10 px-4 py-2 text-sm font-semibold text-cyan-400">
+                        #{result.position}
+                      </div>
+                    )}
                   </div>
 
-                  <p className="mt-5 leading-7 text-gray-400">
+                  <p className="mt-6 leading-8 text-gray-400">
                     {result.snippet}
                   </p>
 
@@ -113,52 +126,12 @@ const SearchDashboard = ({ searchQuery }) => {
                     href={result.link}
                     target="_blank"
                     rel="noreferrer"
-                    className="mt-6 inline-block rounded-lg border border-cyan-500 px-5 py-2 text-cyan-400 transition hover:bg-cyan-500 hover:text-white"
+                    className="mt-7 inline-flex items-center gap-2 rounded-xl bg-cyan-500 px-6 py-3 font-semibold text-black transition hover:scale-105 hover:bg-cyan-400"
                   >
                     🌐 Visit Website
                   </a>
                 </div>
               ))}
-            </div>
-          )}
-
-          {/* People Also Ask */}
-          {peopleAlsoAsk.length > 0 && (
-            <div className="mt-16">
-              <h2 className="mb-6 text-3xl font-bold">
-                People Also Ask
-              </h2>
-
-              <div className="space-y-4">
-                {peopleAlsoAsk.map((item, index) => (
-                  <div
-                    key={index}
-                    className="rounded-xl border border-zinc-800 bg-zinc-900 p-5"
-                  >
-                    {item.question}
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* Related Searches */}
-          {relatedSearches.length > 0 && (
-            <div className="mt-16">
-              <h2 className="mb-6 text-3xl font-bold">
-                Related Searches
-              </h2>
-
-              <div className="flex flex-wrap gap-3">
-                {relatedSearches.map((item, index) => (
-                  <div
-                    key={index}
-                    className="rounded-full border border-cyan-500 px-4 py-2"
-                  >
-                    {item.query}
-                  </div>
-                ))}
-              </div>
             </div>
           )}
         </div>

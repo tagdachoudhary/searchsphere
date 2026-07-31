@@ -3,8 +3,7 @@ import { searchWeb } from "../services/searchApi";
 
 const useSearch = (query) => {
   const [results, setResults] = useState([]);
-  const [peopleAlsoAsk, setPeopleAlsoAsk] = useState([]);
-  const [relatedSearches, setRelatedSearches] = useState([]);
+  const [summary, setSummary] = useState("");
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -19,9 +18,8 @@ const useSearch = (query) => {
 
         const data = await searchWeb(query);
 
-        setResults(data.organic || []);
-        setPeopleAlsoAsk(data.peopleAlsoAsk || []);
-        setRelatedSearches(data.relatedSearches || []);
+        setResults(data.results || []);
+        setSummary(data.summary || "");
       } catch (err) {
         setError(err.message);
       } finally {
@@ -34,8 +32,7 @@ const useSearch = (query) => {
 
   return {
     results,
-    peopleAlsoAsk,
-    relatedSearches,
+    summary,
     loading,
     error,
   };

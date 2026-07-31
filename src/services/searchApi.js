@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:5001/api/search";
+const API_URL = "http://localhost:5001/api/ai/summary";
 
 export const searchWeb = async (query) => {
   const response = await fetch(API_URL, {
