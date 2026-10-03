@@ -1,142 +1,278 @@
-import Sidebar from "./Sidebar";
 import SearchFilters from "./SearchFilters";
 import SearchCategories from "./SearchCategories";
 import useSearch from "../hooks/useSearch";
 
-const SearchDashboard = ({ searchQuery }) => {
-  const { results, summary, loading, error } = useSearch(searchQuery);
+const SearchDashboard = ({
+  searchQuery,
+  onBack,
+  onForward,
+  canGoBack,
+  canGoForward,
+  bookmarks = [],
+  onAddBookmark,
+  onDeleteBookmark,
+}) => {
+  const {
+    results,
+    summary,
+    loading,
+    error,
+  } = useSearch(searchQuery);
+
+  const isBookmarked = (link) => {
+    return bookmarks.some(
+      (bookmark) => bookmark.link === link
+    );
+  };
 
   return (
-    <div className="flex min-h-screen bg-[#030712] text-white">
-      <Sidebar />
+    <main className="min-w-0 px-6 py-8 lg:px-10">
 
-      <main className="flex-1 px-10 py-10">
-        <div className="mx-auto max-w-5xl">
-          {/* Heading */}
-          <h1 className="text-5xl font-bold">
-            Results for{" "}
-            <span className="text-cyan-400">
-              "{searchQuery}"
-            </span>
-          </h1>
+      {/* BACK / FORWARD */}
+      <div className="mb-8 flex items-center gap-3">
 
-          <p className="mt-3 text-lg text-gray-400">
-            Live Google search results powered by SearchSphere AI.
+        <button
+          onClick={onBack}
+          disabled={!canGoBack}
+          className={`rounded-xl border px-5 py-3 font-semibold transition ${
+            canGoBack
+              ? "border-zinc-700 bg-zinc-900 text-white hover:border-cyan-400 hover:text-cyan-400"
+              : "cursor-not-allowed border-zinc-800 bg-zinc-900/50 text-zinc-600"
+          }`}
+        >
+          ← Back
+        </button>
+
+        <button
+          onClick={onForward}
+          disabled={!canGoForward}
+          className={`rounded-xl border px-5 py-3 font-semibold transition ${
+            canGoForward
+              ? "border-zinc-700 bg-zinc-900 text-white hover:border-cyan-400 hover:text-cyan-400"
+              : "cursor-not-allowed border-zinc-800 bg-zinc-900/50 text-zinc-600"
+          }`}
+        >
+          Forward →
+        </button>
+
+      </div>
+
+      {/* TITLE */}
+      <div className="mb-8">
+
+        <p className="mb-2 text-sm text-gray-500">
+          Search Results
+        </p>
+
+        <h1 className="break-words text-3xl font-bold text-white">
+          Results for{" "}
+          <span className="text-cyan-400">
+            "{searchQuery}"
+          </span>
+        </h1>
+
+      </div>
+
+      {/* FILTERS */}
+      <div className="mb-6">
+        <SearchFilters />
+      </div>
+
+      {/* CATEGORIES */}
+      <div className="mb-8">
+        <SearchCategories />
+      </div>
+
+      {/* LOADING */}
+      {loading && (
+        <div className="flex min-h-[300px] items-center justify-center">
+
+          <div className="text-center">
+
+            <div className="mx-auto mb-4 h-10 w-10 animate-spin rounded-full border-4 border-zinc-800 border-t-cyan-400" />
+
+            <p className="text-gray-400">
+              Searching the web...
+            </p>
+
+          </div>
+
+        </div>
+      )}
+
+      {/* ERROR */}
+      {!loading && error && (
+        <div className="mb-6 rounded-2xl border border-red-500/20 bg-red-500/10 p-5">
+
+          <p className="font-semibold text-red-400">
+            Search Error
           </p>
 
-          {/* Filters */}
-          <div className="mt-8">
-            <SearchFilters />
-          </div>
+          <p className="mt-2 text-sm text-red-300/80">
+            {error}
+          </p>
 
-          {/* Categories */}
-          <div className="mt-10">
-            <SearchCategories />
-          </div>
+        </div>
+      )}
 
-          {/* Loading */}
-          {loading && (
-            <div className="mt-12 text-center">
-              <div className="inline-block h-12 w-12 animate-spin rounded-full border-4 border-cyan-400 border-t-transparent"></div>
+      {/* AI SUMMARY */}
+      {!loading &&
+        !error &&
+        summary && (
+          <section className="mb-8 rounded-3xl border border-cyan-500/20 bg-gradient-to-br from-cyan-500/10 via-blue-500/5 to-indigo-500/10 p-6">
 
-              <p className="mt-4 text-gray-400 text-lg">
-                Generating AI Summary...
-              </p>
-            </div>
-          )}
+            <div className="mb-4 flex items-center gap-3">
 
-          {/* Error */}
-          {error && (
-            <div className="mt-10 rounded-2xl border border-red-500 bg-red-500/10 p-6 text-red-300">
-              {error}
-            </div>
-          )}
-
-          {/* AI Summary */}
-          {!loading && !error && summary && (
-            <div className="mt-10 overflow-hidden rounded-3xl border border-cyan-500/20 bg-gradient-to-br from-cyan-500/10 via-blue-500/10 to-indigo-500/10 shadow-2xl backdrop-blur-xl">
-
-              <div className="border-b border-cyan-500/20 px-8 py-6">
-                <div className="flex items-center gap-4">
-                  <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-cyan-500/20 text-3xl">
-                    🤖
-                  </div>
-
-                  <div>
-                    <h2 className="text-3xl font-bold">
-                      AI Summary
-                    </h2>
-
-                    <p className="mt-1 text-gray-400">
-                      AI-generated summary • Powered by Gemini
-                    </p>
-                  </div>
-                </div>
+              <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-cyan-500/15 text-xl">
+                🤖
               </div>
 
-              <div className="p-8">
-                <div className="rounded-2xl border border-cyan-500/20 bg-black/30 p-6">
-                  <div className="mb-5 flex items-center gap-3">
-                    <span className="text-2xl">✨</span>
+              <div>
 
-                    <h3 className="text-xl font-semibold text-cyan-400">
-                      Key Insights
-                    </h3>
-                  </div>
+                <h2 className="font-bold text-white">
+                  SearchSphere AI
+                </h2>
 
-                  <div className="whitespace-pre-line leading-9 text-gray-200">
-                    {summary}
-                  </div>
-                </div>
+                <p className="text-xs text-gray-500">
+                  AI Generated Summary
+                </p>
+
               </div>
-            </div>
-          )}
 
-          {/* Search Results */}
-          {!loading && !error && (
-            <div className="mt-12 space-y-7">
-              {results.map((result, index) => (
-                <div
-                  key={index}
-                  className="group rounded-3xl border border-zinc-800 bg-zinc-900/80 p-8 shadow-lg transition-all duration-300 hover:-translate-y-1 hover:border-cyan-500 hover:shadow-cyan-500/10"
+            </div>
+
+            <div className="whitespace-pre-line text-sm leading-7 text-gray-300">
+              {summary}
+            </div>
+
+          </section>
+        )}
+
+      {/* RESULTS */}
+      {!loading &&
+        !error &&
+        results.length > 0 && (
+          <section className="space-y-5">
+
+            {results.map((result, index) => {
+
+              const bookmarked =
+                isBookmarked(result.link);
+
+              return (
+                <article
+                  key={`${result.link}-${index}`}
+                  className="rounded-2xl border border-zinc-800 bg-zinc-950 p-6 transition hover:border-cyan-500/30 hover:bg-zinc-900/60"
                 >
-                  <div className="flex items-start justify-between gap-6">
-                    <div className="flex-1">
-                      <p className="break-all text-sm text-cyan-400">
-                        {result.link}
-                      </p>
 
-                      <h2 className="mt-3 text-2xl font-bold transition group-hover:text-cyan-400">
-                        {result.title}
-                      </h2>
+                  {/* RESULT HEADER */}
+                  <div className="mb-2 flex items-center justify-between gap-4">
+
+                    <div className="text-xs text-gray-600">
+                      Result{" "}
+                      {result.position || index + 1}
                     </div>
 
-                    {result.position && (
-                      <div className="rounded-full bg-cyan-500/10 px-4 py-2 text-sm font-semibold text-cyan-400">
-                        #{result.position}
-                      </div>
-                    )}
+                    {/* BOOKMARK */}
+                    <button
+                      onClick={() => {
+
+                        if (bookmarked) {
+
+                          const bookmark =
+                            bookmarks.find(
+                              (item) =>
+                                item.link === result.link
+                            );
+
+                          if (bookmark) {
+                            onDeleteBookmark(
+                              bookmark.id
+                            );
+                          }
+
+                          return;
+                        }
+
+                        onAddBookmark({
+                          title: result.title,
+                          link: result.link,
+                          snippet: result.snippet,
+                        });
+                      }}
+                      className={`shrink-0 rounded-xl border px-4 py-2 text-sm font-semibold transition ${
+                        bookmarked
+                          ? "border-yellow-500/30 bg-yellow-500/10 text-yellow-400 hover:bg-red-500/10 hover:text-red-400"
+                          : "border-zinc-700 bg-zinc-900 text-gray-400 hover:border-yellow-500/40 hover:bg-yellow-500/10 hover:text-yellow-400"
+                      }`}
+                      title={
+                        bookmarked
+                          ? "Remove bookmark"
+                          : "Save bookmark"
+                      }
+                    >
+                      {bookmarked
+                        ? "🔖 Saved"
+                        : "🔖 Bookmark"}
+                    </button>
+
                   </div>
 
-                  <p className="mt-6 leading-8 text-gray-400">
-                    {result.snippet}
-                  </p>
-
+                  {/* TITLE */}
                   <a
                     href={result.link}
                     target="_blank"
-                    rel="noreferrer"
-                    className="mt-7 inline-flex items-center gap-2 rounded-xl bg-cyan-500 px-6 py-3 font-semibold text-black transition hover:scale-105 hover:bg-cyan-400"
+                    rel="noopener noreferrer"
+                    className="text-xl font-semibold text-cyan-400 transition hover:text-cyan-300"
                   >
-                    🌐 Visit Website
+                    {result.title}
                   </a>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-      </main>
-    </div>
+
+                  {/* LINK */}
+                  <p className="mt-2 truncate text-sm text-green-500/70">
+                    {result.link}
+                  </p>
+
+                  {/* SNIPPET */}
+                  <p className="mt-4 text-sm leading-7 text-gray-400">
+                    {result.snippet}
+                  </p>
+
+                  {/* VISIT */}
+                  <div className="mt-5">
+
+                    <a
+                      href={result.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center rounded-lg bg-cyan-500/10 px-4 py-2 text-sm font-semibold text-cyan-400 transition hover:bg-cyan-500/20"
+                    >
+                      Visit Website →
+                    </a>
+
+                  </div>
+
+                </article>
+              );
+            })}
+
+          </section>
+        )}
+
+      {/* NO RESULTS */}
+      {!loading &&
+        !error &&
+        results.length === 0 && (
+          <div className="rounded-2xl border border-zinc-800 bg-zinc-950 p-10 text-center">
+
+            <p className="text-gray-400">
+              No search results found.
+            </p>
+
+          </div>
+        )}
+
+    </main>
   );
 };
 

@@ -1,0 +1,53 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model session {
+  sid    String   @id @db.VarChar
+  sess   Json     @db.Json
+  expire DateTime @db.Timestamp(6)
+
+  @@index([expire], map: "IDX_session_expire")
+
+  @@ignore
+}
+
+model User {
+  id          String          @id @default(cuid())
+  email       String          @unique
+  name        String?
+  image       String?
+  createdAt   DateTime        @default(now())
+
+  searches    SearchHistory[]
+  bookmarks   Bookmark[]
+}
+
+model SearchHistory {
+  id        String   @id @default(cuid())
+  query     String
+  createdAt DateTime @default(now())
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model Bookmark {
+  id        String   @id @default(cuid())
+  title     String
+  link      String
+  snippet   String?
+  createdAt DateTime @default(now())
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}

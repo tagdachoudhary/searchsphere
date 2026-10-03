@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { searchWeb } from "../services/searchApi";
 
 const useSearch = (query) => {
@@ -8,8 +8,17 @@ const useSearch = (query) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
+  const lastQueryRef = useRef("");
+
   useEffect(() => {
     if (!query) return;
+
+    // Prevent duplicate API calls for the same query
+    if (lastQueryRef.current === query) {
+      return;
+    }
+
+    lastQueryRef.current = query;
 
     const fetchResults = async () => {
       try {
