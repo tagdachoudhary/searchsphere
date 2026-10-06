@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Search } from "lucide-react";
 
-const BACKEND_URL = "http://localhost:5001";
+const BACKEND_URL = "https://searchsphere-backend-16ps.onrender.com";
 
 function Navbar({
   onSearch,
